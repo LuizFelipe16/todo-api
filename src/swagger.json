@@ -1,0 +1,185 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Todo's API Documentation",
+    "description": "This is an API Todo",
+    "version": "1.0.0",
+    "contact": {
+      "email": "felipefelizatti215@gmail.com"
+    }
+  },
+  "paths": {
+    "/todos": {
+      "post": {
+        "tags": [
+          "Todo"
+        ],
+        "summary": "Create a todo",
+        "description": "Create a new todo from user",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "username",
+            "description": "Username from user with todo",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "deadline": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "title": "Finish code challenge",
+                  "deadline": "2022-04-07"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Object of the todo",
+            "headers": {
+              "username": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Username from user with todo"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "done": {
+                      "type": "boolean"
+                    },
+                    "deadline": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": "5124b2a3-0fcf-480c-97a6-41db3bb80b3f",
+                    "title": "Finish code challenge",
+                    "done": false,
+                    "deadline": "2021-02-25T00:00:00.000Z",
+                    "created_at": "2022-04-08T03:43:09.019Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error message of middleware",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not found!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Todo"
+        ],
+        "summary": "List all todo's",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "username",
+            "description": "Username from user with todo",
+            "required": true
+          }
+        ],
+        "description": "List all todo's from user",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "done": {
+                        "type": "boolean"
+                      },
+                      "deadline": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "id": "5124b2a3-0fcf-480c-97a6-41db3bb80b3f",
+                      "title": "Finish code challenge",
+                      "done": false,
+                      "deadline": "2021-02-25T00:00:00.000Z",
+                      "created_at": "2022-04-08T03:43:09.019Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error message of middleware",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not found!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
