@@ -13,8 +13,6 @@ const users = [];
 function checksExistsUserAccount(request, response, next) {
   const { username } = request.headers;
 
-  console.log(username)
-
   const user = users.find(user => user.username === username);
 
   if (!user) {
@@ -89,10 +87,10 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
   } = request.body;
   const { user } = request;
 
-  const todoAlreadyExists = user.todos.some(todo => todo.id === id);
+  const todoAlreadyExists = user.todos.find(todo => todo.id === id);
 
   if (!todoAlreadyExists) {
-    return response.status(400).json({
+    return response.status(404).json({
       error: 'Todo not found.'
     });
   }
@@ -107,10 +105,10 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
   const { id } = request.params;
   const { user } = request;
 
-  const todoAlreadyExists = user.todos.some(todo => todo.id === id);
+  const todoAlreadyExists = user.todos.find(todo => todo.id === id);
 
   if (!todoAlreadyExists) {
-    return response.status(400).json({
+    return response.status(404).json({
       error: 'Todo not found.'
     });
   }
@@ -124,11 +122,17 @@ app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
   const { id } = request.params;
   const { user } = request;
 
-  const todo = user.todos.some(todo => todo.id === id);
+  const todoAlreadyExists = user.todos.find(todo => todo.id === id);
 
-  user.todos.splice(todo, 1);
+  if (!todoAlreadyExists) {
+    return response.status(404).json({
+      error: 'Todo not found.'
+    });
+  }
 
-  return response.status(200).json({
+  user.todos.splice(todoAlreadyExists, 1);
+
+  return response.status(204).json({
     message: "Todo deleted."
   });
 });
