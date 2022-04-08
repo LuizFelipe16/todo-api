@@ -9,6 +9,86 @@
     }
   },
   "paths": {
+    "/users": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a user",
+        "description": "Create a new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "Luiz Felipe",
+                  "username": "louiz"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Object of the todo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "boolean"
+                    },
+                    "todos": {
+                      "type": "array"
+                    }
+                  },
+                  "example": {
+                    "id": "b025b5f3-3f75-4ab8-b9fd-e8967e6fe562",
+                    "name": "Luiz Felipe",
+                    "username": "louiz",
+                    "todos": []
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User already exists error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User already exists."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/todos": {
       "post": {
         "tags": [
@@ -155,6 +235,294 @@
                       "deadline": "2021-02-25T00:00:00.000Z",
                       "created_at": "2022-04-08T03:43:09.019Z"
                     }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error message of middleware",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not found!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos/${todoId}": {
+      "put": {
+        "tags": [
+          "Todo"
+        ],
+        "summary": "Update a todo",
+        "description": "Update a todo from user",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "username",
+            "description": "Username from user with todo",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id from todo",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "deadline": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "title": "Finish code challenge update",
+                  "deadline": "2022-04-08"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Object of the todo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "done": {
+                      "type": "boolean"
+                    },
+                    "deadline": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": "5124b2a3-0fcf-480c-97a6-41db3bb80b3f",
+                    "title": "Finish code challenge update",
+                    "done": false,
+                    "deadline": "2021-02-25T00:00:00.000Z",
+                    "created_at": "2022-04-08T03:43:09.019Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Todo not found error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "Todo not found!"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error message of middleware",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not found!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Todo"
+        ],
+        "summary": "Delete a todo",
+        "description": "Delete a todo from user",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "username",
+            "description": "Username from user with todo",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id from todo",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "message": "Todo deleted."
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Todo not found error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "Todo not found!"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error message of middleware",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User not found!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos/${todoId}/done": {
+      "patch": {
+        "tags": [
+          "Todo"
+        ],
+        "summary": "Patch a todo",
+        "description": "Patch a todo from user",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "username",
+            "description": "Username from user with todo",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id from todo",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Object of the todo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "done": {
+                      "type": "boolean"
+                    },
+                    "deadline": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": "5124b2a3-0fcf-480c-97a6-41db3bb80b3f",
+                    "title": "Finish code challenge",
+                    "done": true,
+                    "deadline": "2021-02-25T00:00:00.000Z",
+                    "created_at": "2022-04-08T03:43:09.019Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Todo not found error message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "Todo not found!"
                   }
                 }
               }
